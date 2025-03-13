@@ -2,12 +2,16 @@ import 'package:flutterzerodemo/pages/envreplace.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart' as http;
 
+import 'TimeOutClient.dart';
+
 class TokenERC20Service {
+
   // 注意根据运行环境调整IP (Android模拟器需使用10.0.2.2)
   static  String rpcUrl = EnvReplace.localhost;
-
+  static final httpClient = TimeoutClient(http.Client(), Duration(seconds: 30));
+  // 创建 Web3Client 实例，并将 http.Client 传递给它
   // 强烈建议设置超时参数
-  static final client = Web3Client(rpcUrl, http.Client());
+  static final client = Web3Client(rpcUrl,httpClient );
   final ContractAbi _contractAbi;
   final EthereumAddress _contractAddress;
   TokenERC20Service({required String abiJson, required String contractAddress})
